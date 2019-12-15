@@ -196,7 +196,7 @@ func part2(codes []int) {
 
 // Solution of the advent days' pussles
 func Solution() {
-	if codes, err := readOpCodes("input.txt"); err != nil {
+	if codes, err := readOpCodes("day02/input.txt"); err != nil {
 		panic(err)
 	} else {
 		part2(codes)

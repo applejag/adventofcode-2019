@@ -55,7 +55,7 @@ func calcFuelForMassRecursive(mass int) int {
 func Solution() {
 	var sum int
 
-	if lines, err := readLines("input.txt"); err != nil {
+	if lines, err := readLines("day01/input.txt"); err != nil {
 		panic(err)
 	} else {
 		for _, line := range lines {
