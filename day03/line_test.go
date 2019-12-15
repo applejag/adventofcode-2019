@@ -1,7 +1,7 @@
 package day03
 
 import (
-	"kalle/adventofcode/util"
+	"github.com/jilleJr/adventofcode2019/util"
 	"testing"
 )
 

@@ -1,6 +1,6 @@
 package day03
 
-import "kalle/adventofcode/util"
+import "github.com/jilleJr/adventofcode2019/util"
 
 // Intersection is a Vector2 position with a score
 type Intersection struct {

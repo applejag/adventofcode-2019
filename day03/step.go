@@ -1,6 +1,6 @@
 package day03
 
-import "kalle/adventofcode/util"
+import "github.com/jilleJr/adventofcode2019/util"
 
 // Step is one segment in a path
 type Step struct {
