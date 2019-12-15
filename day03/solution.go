@@ -2,12 +2,12 @@ package day03
 
 import (
 	"fmt"
+	"github.com/jilleJr/adventofcode-2019/turtle"
+	"github.com/jilleJr/adventofcode-2019/util"
 	"image"
 	"image/color"
 	"image/png"
 	"io/ioutil"
-	"github.com/jilleJr/adventofcode-2019/turtle"
-	"github.com/jilleJr/adventofcode-2019/util"
 	"math"
 	"os"
 	"strconv"
