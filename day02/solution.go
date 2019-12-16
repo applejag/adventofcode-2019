@@ -2,34 +2,9 @@ package day02
 
 import (
 	"fmt"
-	"io/ioutil"
+	"github.com/jilleJr/adventofcode-2019/util"
 	"strconv"
-	"strings"
 )
-
-func readOpCodes(file string) ([]int, error) {
-	b, err := ioutil.ReadFile(file)
-	if err != nil {
-		return nil, err
-	}
-	var builder strings.Builder
-	if _, err := builder.Write(b); err != nil {
-		return nil, err
-	}
-
-	strCodes := strings.Split(strings.TrimRight(builder.String(), "\x00\n\r\t"), ",")
-	codes := make([]int, len(strCodes))
-
-	for i, v := range strCodes {
-		if op, err := strconv.ParseUint(v, 10, 0); err != nil {
-			return nil, err
-		} else {
-			codes[i] = int(op)
-		}
-	}
-
-	return codes, nil
-}
 
 func getPrintableTargetOpCode(array []int, index int) string {
 	if index < 0 || index > len(array) {
@@ -196,7 +171,7 @@ func part2(codes []int) {
 
 // Solution of the advent days' pussles
 func Solution() {
-	if codes, err := readOpCodes("day02/input.txt"); err != nil {
+	if codes, err := util.ReadIntegers("day02/input.txt"); err != nil {
 		panic(err)
 	} else {
 		part2(codes)

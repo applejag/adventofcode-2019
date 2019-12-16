@@ -2,24 +2,9 @@ package day0
 
 import (
 	"fmt"
-	"io/ioutil"
+	"github.com/jilleJr/adventofcode-2019/util"
 	"strconv"
-	"strings"
 )
-
-func readLines(file string) ([]string, error) {
-	b, err := ioutil.ReadFile(file)
-	if err != nil {
-		return nil, err
-	}
-	var builder strings.Builder
-	if _, err := builder.Write(b); err != nil {
-		return nil, err
-	}
-
-	lines := strings.Split(builder.String(), "\n")
-	return lines, nil
-}
 
 func calcFuelForMass(mass int) int {
 	fuel := mass/3 - 2
@@ -55,7 +40,7 @@ func calcFuelForMassRecursive(mass int) int {
 func Solution() {
 	var sum int
 
-	if lines, err := readLines("day01/input.txt"); err != nil {
+	if lines, err := util.ReadLines("day01/input.txt"); err != nil {
 		panic(err)
 	} else {
 		for _, line := range lines {
