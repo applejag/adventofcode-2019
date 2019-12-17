@@ -77,18 +77,54 @@ func PrintOpCodes(codes []int, current int) {
 }
 
 func ValidateBinaryOp(codes []int, current int, op string) (a int, b int, r int) {
+	a = ResolveAddress(1, codes, current, op)
+	b = ResolveAddress(2, codes, current, op)
+	r = ResolveAddress(3, codes, current, op)
+	return
+}
+
+func ResolveValue(param int, mode int, codes []int, current int, op string) int {
 	count := len(codes)
-	a = codes[current+1]
-	b = codes[current+2]
-	r = codes[current+3]
+
+	if param < 0 || param >= count {
+		panic(fmt.Errorf("%v:%s\tparameter %v: parameter index out of bounds", current, op, param))
+	}
+
+	switch mode {
+	case 0: // position mode
+		a := codes[current+param]
+		if a < 0 || a >= count {
+			panic(fmt.Errorf("%v:%s\tparameter %v: postition mode out of bounds (%v)", current, op, param, a))
+		}
+		return codes[a]
+
+	case 1: // immediate mode
+		return codes[current+param]
+
+	default:
+		panic(fmt.Errorf("%v:%s\tunknown intcode parameter mode '%v'", current, op, mode))
+	}
+}
+
+func ResolveAddress(param int, codes []int, current int, op string) int {
+	count := len(codes)
+
+	if param < 0 || param >= count {
+		panic(fmt.Errorf("%v:%s\tparameter %v: parameter index out of bounds", current, op, param))
+	}
+
+	// position mode
+	a := codes[current+param]
 	if a < 0 || a >= count {
-		panic(fmt.Errorf("%s at %v LHS index out of bounds (%v)", op, current, a))
+		panic(fmt.Errorf("%v:%s\tparameter %v: postition mode out of bounds (%v)", current, op, param, a))
 	}
-	if b < 0 || b >= count {
-		panic(fmt.Errorf("%s at %v RHS index out of bounds (%v)", op, current, b))
-	}
-	if r < 0 || r >= count {
-		panic(fmt.Errorf("%s at %v result index out of bounds (%v)", op, current, r))
-	}
+	return a
+}
+
+func ResolveModes(code int) (instr, mode1, mode2, mode3 int) {
+	instr = code % 100
+	mode1 = (code / 100) % 10
+	mode2 = (code / 1000) % 10
+	mode3 = (code / 1000) % 10
 	return
 }
