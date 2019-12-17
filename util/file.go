@@ -23,7 +23,7 @@ func ReadLines(file string) ([]string, error) {
 }
 
 func integerFieldsFunc(r rune) bool {
-	return !unicode.IsDigit(r)
+	return !unicode.IsDigit(r) && r != '-'
 }
 
 // ReadIntegers returns array of integers from a file of comma separated numbers

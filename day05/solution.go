@@ -17,27 +17,27 @@ func step(codes []int, current int) (newCurrent int) {
 	case 1:
 		// add
 		var (
-			a = intcode.ResolveValue(1, mode1, codes, current, "ADD")
-			b = intcode.ResolveValue(2, mode2, codes, current, "ADD")
-			r = intcode.ResolveAddress(3, codes, current, "ADD")
+			a    = intcode.ResolveValue(1, mode1, codes, current, "ADD")
+			b    = intcode.ResolveValue(2, mode2, codes, current, "ADD")
+			addr = intcode.ResolveAddress(3, codes, current, "ADD")
 		)
-		codes[r] = a + b
+		codes[addr] = a + b
 		return current + 4
 	case 2:
 		// multiply
 		var (
-			a = intcode.ResolveValue(1, mode1, codes, current, "MUL")
-			b = intcode.ResolveValue(2, mode2, codes, current, "MUL")
-			r = intcode.ResolveAddress(3, codes, current, "MUL")
+			a    = intcode.ResolveValue(1, mode1, codes, current, "MUL")
+			b    = intcode.ResolveValue(2, mode2, codes, current, "MUL")
+			addr = intcode.ResolveAddress(3, codes, current, "MUL")
 		)
-		codes[r] = a * b
+		codes[addr] = a * b
 		return current + 4
 	case 3:
 		// input
 		var (
-			r = intcode.ResolveAddress(1, codes, current, "IN")
+			addr   = intcode.ResolveAddress(1, codes, current, "IN")
+			reader = bufio.NewReader(os.Stdin)
 		)
-		var reader = bufio.NewReader(os.Stdin)
 
 		fmt.Printf("%v:IN\tenter input: ", current)
 		if input, err := reader.ReadString('\n'); err != nil {
@@ -45,7 +45,7 @@ func step(codes []int, current int) (newCurrent int) {
 		} else if n, err := strconv.Atoi(strings.Trim(input, "\r\n\t ")); err != nil {
 			panic(err)
 		} else {
-			codes[r] = n
+			codes[addr] = n
 		}
 
 		return current + 2
@@ -69,7 +69,6 @@ func step(codes []int, current int) (newCurrent int) {
 
 	case 5:
 		// jump-if-true
-		fmt.Printf("%v:JMP\n", current)
 		var (
 			cond = intcode.ResolveValue(1, mode1, codes, current, "JMP")
 			addr = intcode.ResolveValue(2, mode2, codes, current, "JMP")
@@ -82,7 +81,6 @@ func step(codes []int, current int) (newCurrent int) {
 
 	case 6:
 		// jump-if-false
-		fmt.Printf("%v:JPF\n", current)
 		var (
 			cond = intcode.ResolveValue(1, mode1, codes, current, "JPF")
 			addr = intcode.ResolveValue(2, mode2, codes, current, "JPF")
@@ -95,31 +93,29 @@ func step(codes []int, current int) (newCurrent int) {
 
 	case 7:
 		// less-than
-		fmt.Printf("%v:LT\n", current)
 		var (
-			a = intcode.ResolveValue(1, mode1, codes, current, "LT")
-			b = intcode.ResolveValue(2, mode2, codes, current, "LT")
-			r = intcode.ResolveAddress(3, codes, current, "LT")
+			a    = intcode.ResolveValue(1, mode1, codes, current, "LT")
+			b    = intcode.ResolveValue(2, mode2, codes, current, "LT")
+			addr = intcode.ResolveAddress(3, codes, current, "LT")
 		)
 		if a < b {
-			codes[r] = 1
+			codes[addr] = 1
 		} else {
-			codes[r] = 0
+			codes[addr] = 0
 		}
 		return current + 4
 
 	case 8:
 		// equals
-		fmt.Printf("%v:EQ\n", current)
 		var (
-			a = intcode.ResolveValue(1, mode1, codes, current, "EQ")
-			b = intcode.ResolveValue(2, mode2, codes, current, "EQ")
-			r = intcode.ResolveAddress(3, codes, current, "EQ")
+			a    = intcode.ResolveValue(1, mode1, codes, current, "EQ")
+			b    = intcode.ResolveValue(2, mode2, codes, current, "EQ")
+			addr = intcode.ResolveAddress(3, codes, current, "EQ")
 		)
 		if a == b {
-			codes[r] = 1
+			codes[addr] = 1
 		} else {
-			codes[r] = 0
+			codes[addr] = 0
 		}
 		return current + 4
 
@@ -128,7 +124,7 @@ func step(codes []int, current int) (newCurrent int) {
 		fmt.Printf("%v:END\tend of execution reached", current)
 		return -1
 	default:
-		panic(fmt.Errorf("%v:?\tunexpected instruction %v", current, instr))
+		panic(fmt.Errorf("%v:?\tunsupported instruction %v", current, instr))
 	}
 }
 
